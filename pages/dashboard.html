@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="./style.css" />
+    <style>
+      .dashboard-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .logout-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .logout-btn:hover {
+        background-color: #d32f2f;
+      }
+      .card {
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .card h3 {
+        margin-top: 0;
+        color: #333;
+      }
+      .user-info {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+      }
+      .user-info div {
+        padding: 5px 0;
+      }
+      .user-info div:nth-child(odd) {
+        font-weight: bold;
+      }
+      .admin-badge {
+        display: inline-block;
+        background-color: #ff9800;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        margin-left: 10px;
+      }
+      .user-badge {
+        display: inline-block;
+        background-color: #2196F3;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        margin-left: 10px;
+      }
+      .guest-badge {
+        display: inline-block;
+        background-color: #9E9E9E;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        margin-left: 10px;
+      }
+      .hidden {
+        display: none;
+      }
+      .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .profile-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        border: 3px solid #4CAF50;
+      }
+      .profile-header h2 {
+        margin: 0 0 5px 0;
+        color: #333;
+      }
+      .profile-header p {
+        margin: 0 0 5px 0;
+        color: #666;
+      }
+      .permission-tag {
+        display: inline-block;
+        background-color: #e0e0e0;
+        color: #333;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        margin-right: 5px;
+        margin-bottom: 5px;
+      }
+      .permission-read { background-color: #e3f2fd; color: #1565c0; }
+      .permission-write { background-color: #e8f5e9; color: #2e7d32; }
+      .permission-delete { background-color: #ffebee; color: #c62828; }
+      .permission-admin { background-color: #fff3e0; color: #e65100; }
+      .permission-approve { background-color: #f3e5f5; color: #6a1b9a; }
+      .permission-debug { background-color: #ede7f6; color: #4527a0; }
+      .permission-design { background-color: #e0f7fa; color: #00838f; }
+      .permission-analyze { background-color: #e8eaf6; color: #283593; }
+      .permission-support { background-color: #f1f8e9; color: #558b2f; }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <div class="header">
+        <h1>Welcome <span id="userName">to Dashboard</span></h1>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+      </div>
+
+      <div class="card">
+        <h3>User Information</h3>
+        <div class="user-profile" id="userProfile">
+          <div class="profile-header">
+            <img id="profileImage" src="" alt="Profile Image" class="profile-image">
+            <div>
+              <h2 id="profileName"></h2>
+              <p id="profileRole"></p>
+              <p id="profileEmail"></p>
+            </div>
+          </div>
+          <div class="user-info" id="userInfo">
+            <div>Username:</div>
+            <div id="username"></div>
+            <div>Department:</div>
+            <div id="department"></div>
+            <div>Join Date:</div>
+            <div id="joinDate"></div>
+            <div>Last Login:</div>
+            <div id="lastLogin"></div>
+            <div>Permissions:</div>
+            <div id="permissions"></div>
+          </div>
+        </div>
+        <p id="noUserInfo" class="hidden">Please log in to view your information.</p>
+      </div>
+
+      <div class="card">
+        <h3>Available Users for Testing</h3>
+        <p>You can log in with any of these accounts:</p>
+
+        <div class="user-list">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Department</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>admin</td>
+                <td>password</td>
+                <td>Admin <span class="admin-badge">ADMIN</span></td>
+                <td>IT</td>
+              </tr>
+              <tr>
+                <td>john</td>
+                <td>john123</td>
+                <td>User <span class="user-badge">USER</span></td>
+                <td>Marketing</td>
+              </tr>
+              <tr>
+                <td>jane</td>
+                <td>jane123</td>
+                <td>User <span class="user-badge">USER</span></td>
+                <td>Finance</td>
+              </tr>
+              <tr>
+                <td>guest</td>
+                <td>guest</td>
+                <td>Guest <span class="guest-badge">GUEST</span></td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>sarah</td>
+                <td>sarah456</td>
+                <td>Manager <span class="manager-badge">MANAGER</span></td>
+                <td>Human Resources</td>
+              </tr>
+              <tr>
+                <td>michael</td>
+                <td>mike789</td>
+                <td>Developer <span class="developer-badge">DEVELOPER</span></td>
+                <td>Engineering</td>
+              </tr>
+              <tr>
+                <td>emma</td>
+                <td>emma321</td>
+                <td>Designer <span class="designer-badge">DESIGNER</span></td>
+                <td>Design</td>
+              </tr>
+              <tr>
+                <td>david</td>
+                <td>david456</td>
+                <td>Analyst <span class="analyst-badge">ANALYST</span></td>
+                <td>Business Intelligence</td>
+              </tr>
+              <tr>
+                <td>olivia</td>
+                <td>olivia789</td>
+                <td>Support <span class="support-badge">SUPPORT</span></td>
+                <td>Customer Support</td>
+              </tr>
+              <tr>
+                <td>james</td>
+                <td>james123</td>
+                <td>Intern <span class="intern-badge">INTERN</span></td>
+                <td>Marketing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Check if user data exists in sessionStorage
+      const userData = sessionStorage.getItem('userData');
+
+      if (userData) {
+        const user = JSON.parse(userData);
+
+        // Update the welcome message
+        document.getElementById('userName').textContent = user.name;
+
+        // Set profile image and header info
+        document.getElementById('profileImage').src = user.profileImage || 'https://randomuser.me/api/portraits/lego/1.jpg';
+        document.getElementById('profileName').textContent = user.name;
+
+        // Format role with first letter capitalized
+        const formattedRole = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+
+        // Create role badge
+        const badgeClass = `${user.role}-badge`;
+        const badgeText = user.role.toUpperCase();
+        const badge = document.createElement('span');
+        badge.className = badgeClass;
+        badge.textContent = badgeText;
+
+        // Set role with badge
+        document.getElementById('profileRole').textContent = formattedRole + ' ';
+        document.getElementById('profileRole').appendChild(badge);
+
+        // Set email
+        document.getElementById('profileEmail').textContent = user.email;
+
+        // Fill in user information
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('department').textContent = user.department || 'Not specified';
+
+        // Format join date
+        const joinDate = user.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'Not specified';
+        document.getElementById('joinDate').textContent = joinDate;
+
+        // Format last login date and time
+        const lastLogin = user.lastLogin
+          ? new Date(user.lastLogin).toLocaleString()
+          : 'Not specified';
+        document.getElementById('lastLogin').textContent = lastLogin;
+
+        // Display permissions as tags
+        const permissionsElement = document.getElementById('permissions');
+        if (user.permissions && user.permissions.length > 0) {
+          user.permissions.forEach(permission => {
+            const permTag = document.createElement('span');
+            permTag.className = `permission-tag permission-${permission}`;
+            permTag.textContent = permission;
+            permissionsElement.appendChild(permTag);
+          });
+        } else {
+          permissionsElement.textContent = 'None';
+        }
+      } else {
+        // If no user data, show message and hide user profile
+        document.getElementById('userProfile').classList.add('hidden');
+        document.getElementById('noUserInfo').classList.remove('hidden');
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+        // Clear user data from sessionStorage
+        sessionStorage.removeItem('userData');
+        // Redirect to login page
+        window.location.href = '/login';
+      });
+    </script>
+  </body>
+</html>
